@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Bolder Way Forward: Utah Women's Financial Perceptions</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #000000;
+            background: #e6e6e6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 60px;
+            background: #efefef;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: #b1864a;
+        }
+
+        .logo {
+            flex-shrink: 0;
+            margin-right: 40px;
+        }
+
+        .logo img {
+            height: 120px;
+            width: auto;
+        }
+
+        .header-content {
+            flex: 1;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #000000;
+            font-weight: 300;
+        }
+
+        .header .subtitle {
+            font-size: 1.2em;
+            color: #000000;
+            font-style: italic;
+        }
+
+        .story-section {
+            background: #e7e7e7;
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        .story-section h2 {
+            color: #000000;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            text-align: center;
+            border-bottom: 3px solid #b1864a;
+            padding-bottom: 15px;
+        }
+
+        .intro-text p {
+            font-size: 1.3em;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            color: #000000;
+        }
+
+        .wow-section {
+            background: #efefef;
+            padding: 60px 40px;
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            margin-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wow-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: #b1864a;
+        }
+
+        .comparison-viz {
+            text-align: center;
+        }
+
+        .metric-comparison {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 60px;
+            margin-bottom: 40px;
+        }
+
+        .percentage-circle {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .percentage-circle:hover {
+            transform: scale(1.05);
+        }
+
+        .utah-overall {
+            background: linear-gradient(135deg, #e6e6e6 0%, #d0d0d0 100%);
+            border: 4px solid #b1864a;
+        }
+
+        .utah-county {
+            background: linear-gradient(135deg, #b1864a 0%, #8d6a3a 100%);
+            color: white;
+        }
+
+        .percentage-circle .percentage {
+            font-size: 3.5em;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .percentage-circle .label {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .vs-divider {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #b1864a;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .metric-title {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #000000;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .insight-text {
+            background: rgba(177, 134, 74, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #b1864a;
+        }
+
+        .insight-text p {
+            font-size: 1.2em;
+            line-height: 1.7;
+            margin: 0;
+            color: #000000;
+        }
+
+        .chart-section {
+            background: #efefef;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        .chart-section h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #000000;
+            font-size: 1.8em;
+        }
+
+        .chart-insights {
+            margin-top: 30px;
+            padding: 30px;
+            background: rgba(177, 134, 74, 0.1);
+            border-radius: 15px;
+        }
+
+        .insight-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            gap: 20px;
+        }
+
+        .insight-item {
+            flex: 1;
+            padding: 20px;
+            background: #e7e7e7;
+            border-radius: 10px;
+            text-align: center;
+            border-left: 4px solid #b1864a;
+        }
+
+        .standout-item {
+            background: #efefef;
+            border-left-color: #b1864a;
+            box-shadow: 0 5px 15px rgba(177, 134, 74, 0.3);
+        }
+
+        .metric-name {
+            display: block;
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #000000;
+            margin-bottom: 8px;
+        }
+
+        .comparison {
+            display: block;
+            font-size: 1.3em;
+            color: #b1864a;
+            font-weight: 600;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 500px;
+            margin-bottom: 30px;
+        }
+
+        <!-- LDS Advantage Section -->
+        <div class="story-section">
+            <h2>The LDS Advantage: Community, Culture, and Financial Empowerment</h2>
+            <p>Now we turn to perhaps the most striking finding in our data: the role of religious community in shaping financial perceptions. When we examine LDS women specifically, particularly those in Utah County, we see financial empowerment reaching new heights.</p>
+        </div>
+
+        <div class="lds-comparison">
+            <div class="lds-viz-container">
+                <div class="lds-metric-grid">
+                    <div class="lds-metric-card">
+                        <div class="metric-header">Importance</div>
+                        <div class="lds-comparison-bars">
+                            <div class="bar-container">
+                                <div class="bar-label">All Utah LDS</div>
+                                <div class="bar utah-lds-bar" style="width: 89%;">89%</div>
+                            </div>
+                            <div class="bar-container">
+                                <div class="bar-label">Utah County LDS</div>
+                                <div class="bar utah-county-lds-bar" style="width: 96%;">96%</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="lds-metric-card">
+                        <div class="metric-header">Valuable</div>
+                        <div class="lds-comparison-bars">
+                            <div class="bar-container">
+                                <div class="bar-label">All Utah LDS</div>
+                                <div class="bar utah-lds-bar" style="width: 91%;">91%</div>
+                            </div>
+                            <div class="bar-container">
+                                <div class="bar-label">Utah County LDS</div>
+                                <div class="bar utah-county-lds-bar" style="width: 96%;">96%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lds-standout-metrics">
+                    <div class="standout-metric">
+                        <div class="standout-title">Resource Awareness</div>
+                        <div class="standout-comparison">
+                            <span class="standout-number utah-county-lds">85%</span>
+                            <span class="vs">vs</span>
+                            <span class="standout-number utah-lds">69%</span>
+                        </div>
+                        <div class="standout-label">Utah County LDS vs All Utah LDS</div>
+                        <div class="standout-insight">+16 point advantage</div>
+                    </div>
+                    
+                    <div class="standout-metric">
+                        <div class="standout-title">Resource Utilization</div>
+                        <div class="standout-comparison">
+                            <span class="standout-number utah-county-lds">74%</span>
+                            <span class="vs">vs</span>
+                            <span class="standout-number utah-lds">58%</span>
+                        </div>
+                        <div class="standout-label">Utah County LDS vs All Utah LDS</div>
+                        <div class="standout-insight">+16 point advantage</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conclusions Section -->
+        <div class="story-section">
+            <h2>Key Insights & Strategic Implications</h2>
+            
+            <div class="conclusion-grid">
+                <div class="conclusion-card">
+                    <h3>The Power of Concentrated Community</h3>
+                    <p>LDS women in Utah County represent the gold standard for financial empowerment in Utah, with 96% agreement on both importance and value of financial competence. This suggests that concentrated community support, shared values, and accessible resources create measurable advantages.</p>
+                </div>
+                
+                <div class="conclusion-card">
+                    <h3>Geographic Proximity Matters</h3>
+                    <p>Utah County consistently outperforms state averages across all metrics, with the largest advantages in resource utilization (+14 points). This indicates that proximity to educational institutions, financial resources, and community networks significantly impacts women's financial empowerment.</p>
+                </div>
+                
+                <div class="conclusion-card">
+                    <h3>The Utilization Opportunity</h3>
+                    <p>While awareness is relatively strong statewide (65-85%), the translation to actual resource utilization presents the greatest opportunity. Even high-performing groups show gaps between awareness and action, suggesting barriers remain in accessing financial resources.</p>
+                </div>
+            </div>
+            
+            <div class="final-insight">
+                <h3>The Path Forward</h3>
+                <p>Utah has a strong foundation of women who recognize the importance of financial competence. The success of Utah County, particularly among LDS women, provides a roadmap for statewide improvement: combine community support, accessible resources, and cultural emphasis on financial responsibility to bridge the gap between recognition and action.</p>
+            </div>
+        </div>
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: #efefef;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #e6e6e6;
+        }
+
+        .data-table th {
+            background: #b1864a;
+            color: #efefef;
+            font-weight: 600;
+        }
+
+        .data-table tr:hover {
+            background: #e6e6e6;
+        }
+
+        .percentage {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .high { color: #27ae60; }
+        .medium { color: #f39c12; }
+        .low { color: #e74c3c; }
+
+        .analysis {
+            background: #e7e7e7;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        .analysis h2 {
+            color: #000000;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #b1864a;
+            padding-bottom: 10px;
+        }
+
+        .analysis h3 {
+            color: #000000;
+            margin: 25px 0 15px 0;
+            font-size: 1.3em;
+        }
+
+        .analysis p {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            line-height: 1.7;
+            color: #000000;
+        }
+
+        .highlight {
+            background: #efefef;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 25px 0;
+            border-left: 4px solid #b1864a;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: #efefef;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #e6e6e6;
+        }
+
+        .data-table th {
+            background: #b1864a;
+            color: #efefef;
+            font-weight: 600;
+        }
+
+        .data-table tr:hover {
+            background: #e6e6e6;
+        }
+
+        .percentage {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .high { color: #b1864a; }
+        .medium { color: #b1864a; }
+        .low { color: #b1864a; }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 15px;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <svg width="200" height="120" viewBox="0 0 640 387" style="background: transparent;">
+                    <!-- Background rectangle -->
+                    <rect x="0" y="0" width="640" height="387" fill="#e6e6e6"/>
+                    
+                    <!-- Gold border -->
+                    <rect x="20" y="20" width="600" height="347" fill="none" stroke="#b1864a" stroke-width="8"/>
+                    
+                    <!-- Arrow shape -->
+                    <polygon points="440,40 580,40 620,100 580,160 440,160" fill="#b1864a"/>
+                    
+                    <!-- Inner rectangle for text -->
+                    <rect x="40" y="40" width="380" height="120" fill="#efefef"/>
+                    
+                    <!-- Main text -->
+                    <text x="60" y="90" font-family="Arial Black, sans-serif" font-size="36" font-weight="900" fill="#000000">A BOLDER</text>
+                    <text x="60" y="130" font-family="Arial Black, sans-serif" font-size="36" font-weight="900" fill="#000000">WAY FORWARD</text>
+                    
+                    <!-- Subtitle -->
+                    <text x="60" y="200" font-family="Arial, sans-serif" font-size="24" font-weight="normal" fill="#000000" letter-spacing="8">FOR UTAH</text>
+                    
+                    <!-- Small rectangles at bottom -->
+                    <rect x="40" y="320" width="60" height="20" fill="#b1864a"/>
+                    <rect x="560" y="340" width="40" height="15" fill="#b1864a"/>
+                </svg>
+            </div>
+            <div class="header-content">
+                <h1>Understanding Utah Women's Financial Perceptions</h1>
+                <p class="subtitle">Data insights from the "A Bolder Way Forward" research initiative</p>
+            </div>
+        </div>
+
+        <!-- Introduction Section -->
+        <div class="story-section">
+            <h2>How do Utah County women's perceptions towards finance compare to Utahns' perceptions overall?</h2>
+            
+            <div class="intro-text">
+                <p>When examining financial perceptions across Utah, a remarkable pattern emerges. Utah County women consistently demonstrate higher confidence, awareness, and engagement with financial topics than the state average. But just how significant is this difference?</p>
+                
+                <p>Let's start with the foundation: the importance of financial competence for women.</p>
+            </div>
+        </div>
+
+        <!-- WOW Factor Visualization -->
+        <div class="wow-section">
+            <div class="comparison-viz">
+                <div class="metric-comparison">
+                    <div class="comparison-item">
+                        <div class="percentage-circle utah-county">
+                            <span class="percentage">71%</span>
+                            <div class="label">Utah County</div>
+                        </div>
+                    </div>
+                    <div class="vs-divider">VS</div>
+                    <div class="comparison-item">
+                        <div class="percentage-circle utah-overall">
+                            <span class="percentage">57%</span>
+                            <div class="label">Utah Overall</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="metric-title">Utilized: I have utilized resources that have helped me achieve financial security</div>
+                <div class="insight-text">
+                    <p><strong>The Real Difference:</strong> This stunning 14-point gap reveals the true advantage of Utah County women. While recognition of financial importance is universal, Utah County women are significantly more likely to take action and actually use available financial resources.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Complete Picture: All Five Metrics -->
+        <div class="story-section">
+            <h2>But This is Just the Beginning</h2>
+            <p>While the importance metric shows a modest advantage, the real story unfolds when we examine all five dimensions of financial perception. Utah County women don't just recognize the importance of financial competence—they act on it.</p>
+        </div>
+
+        <div class="chart-section">
+            <h2>Utah County vs. Utah Overall: The Complete Financial Picture</h2>
+            <div class="chart-container">
+                <canvas id="financialChart"></canvas>
+            </div>
+            <div class="chart-insights">
+                <div class="insight-row">
+                    <div class="insight-item">
+                        <span class="metric-name">Valuable:</span>
+                        <span class="comparison">90% vs 87% (+3 points)</span>
+                    </div>
+                    <div class="insight-item">
+                        <span class="metric-name">Manage:</span>
+                        <span class="comparison">83% vs 75% (+8 points)</span>
+                    </div>
+                </div>
+                <div class="insight-row">
+                    <div class="insight-item standout-item">
+                        <span class="metric-name">Aware:</span>
+                        <span class="comparison">72% vs 65% (+7 points)</span>
+                    </div>
+                    <div class="insight-item standout-item">
+                        <span class="metric-name">Utilized:</span>
+                        <span class="comparison">71% vs 57% (+14 points)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="analysis">
+            <h2>Strategic Implications & Recommendations</h2>
+            
+            <h3>Leverage High-Performing Communities</h3>
+            <p>The success of LDS women in Utah County suggests that concentrated community support, educational resources, and cultural emphasis on financial responsibility create measurable outcomes. Understanding and replicating these community-level factors could benefit women statewide.</p>
+
+            <h3>Bridge the Awareness-to-Action Gap</h3>
+            <p>While financial literacy awareness is relatively strong, converting that awareness into resource utilization represents the greatest opportunity for impact. Targeted interventions should focus on removing barriers to resource access and creating more accessible pathways to financial tools and education.</p>
+
+            <h3>Expand Geographic Access</h3>
+            <p>The consistent Utah County advantage across all metrics suggests that geographic proximity to resources matters significantly. Expanding access to financial resources and education beyond central population centers could help close the statewide gaps in financial empowerment.</p>
+
+            <div class="highlight">
+                <strong>Bottom Line:</strong> Utah has a strong foundation of women who value financial competence, but significant opportunities exist to translate that recognition into resource utilization and practical financial confidence, particularly outside of Utah County's concentrated support ecosystem.
+            </div>
+
+        const data = {
+            labels: ['Importance', 'Valuable', 'Manage', 'Aware', 'Utilized'],
+            datasets: [
+                {
+                    label: 'Utah Overall',
+                    data: [88, 87, 75, 65, 57],
+                    backgroundColor: 'rgba(177, 134, 74, 0.3)',
+                    borderColor: '#b1864a',
+                    borderWidth: 2,
+                    fill: false
+                },
+                {
+                    label: 'Utah County',
+                    data: [89, 90, 83, 72, 71],
+                    backgroundColor: 'rgba(177, 134, 74, 0.5)',
+                    borderColor: '#b1864a',
+                    borderWidth: 3,
+                    fill: false
+                }
+            ]
+        };
+        </div> while LDS affiliation provides additional confidence, with Utah County LDS women reporting 85% confidence in independent financial management.</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Financial Dimension</th>
+                        <th>Utah Overall</th>
+                        <th>Utah County</th>
+                        <th>Utah County LDS</th>
+                        <th>All Utah LDS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Importance</strong></td>
+                        <td class="percentage medium">88%</td>
+                        <td class="percentage medium">89%</td>
+                        <td class="percentage high">96%</td>
+                        <td class="percentage medium">89%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Valuable</strong></td>
+                        <td class="percentage medium">87%</td>
+                        <td class="percentage medium">90%</td>
+                        <td class="percentage high">96%</td>
+                        <td class="percentage high">91%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Manage</strong></td>
+                        <td class="percentage medium">75%</td>
+                        <td class="percentage medium">83%</td>
+                        <td class="percentage medium">85%</td>
+                        <td class="percentage medium">79%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Aware</strong></td>
+                        <td class="percentage low">65%</td>
+                        <td class="percentage medium">72%</td>
+                        <td class="percentage medium">85%</td>
+                        <td class="percentage low">69%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Utilized</strong></td>
+                        <td class="percentage low">57%</td>
+                        <td class="percentage medium">71%</td>
+                        <td class="percentage medium">74%</td>
+                        <td class="percentage low">58%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="analysis">
+            <h2>Strategic Implications & Recommendations</h2>
+            
+            <h3>Leverage High-Performing Communities</h3>
+            <p>The success of LDS women in Utah County suggests that concentrated community support, educational resources, and cultural emphasis on financial responsibility create measurable outcomes. Understanding and replicating these community-level factors could benefit women statewide.</p>
+
+            <h3>Bridge the Awareness-to-Action Gap</h3>
+            <p>While financial literacy awareness is relatively strong, converting that awareness into resource utilization represents the greatest opportunity for impact. Targeted interventions should focus on removing barriers to resource access and creating more accessible pathways to financial tools and education.</p>
+
+            <h3>Expand Geographic Access</h3>
+            <p>The consistent Utah County advantage across all metrics suggests that geographic proximity to resources matters significantly. Expanding access to financial resources and education beyond central population centers could help close the statewide gaps in financial empowerment.</p>
+
+            <div class="highlight">
+                <strong>Bottom Line:</strong> Utah has a strong foundation of women who value financial competence, but significant opportunities exist to translate that recognition into resource utilization and practical financial confidence, particularly outside of Utah County's concentrated support ecosystem.
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><em>Data Source: "A Bolder Way Forward" Research Initiative, Utah State University</em></p>
+            <p>Analysis focuses on survey responses measuring financial perceptions across Utah demographics</p>
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('financialChart').getContext('2d');
+        
+        @media (max-width: 768px) {
+            .container { padding: 20px 10px; }
+            .header h1 { font-size: 2em; }
+            .chart-container { height: 400px; }
+            .header { flex-direction: column; text-align: center; }
+            .logo { margin-right: 0; margin-bottom: 20px; }
+            .metric-comparison { flex-direction: column; gap: 30px; }
+            .lds-metric-grid { grid-template-columns: 1fr; }
+            .lds-standout-metrics { grid-template-columns: 1fr; }
+            .conclusion-grid { grid-template-columns: 1fr; }
+            .insight-row { flex-direction: column; }
+        }
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Financial Perceptions by Demographic Group',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    },
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Percentage Agreement'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Financial Dimensions'
+                        }
+                    }
+                },
+                elements: {
+                    point: {
+                        radius: 6,
+                        hoverRadius: 8
+                    },
+                    line: {
+                        tension: 0.2
+                    }
+                }
+            }
+        };
+
+        new Chart(ctx, config);
+    </script>
+</body>
+</html>
